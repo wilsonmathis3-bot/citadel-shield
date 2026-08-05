@@ -44,9 +44,11 @@ def _split_sql(sql: str):
 
 
 def upgrade() -> None:
-    # Preserve legacy CITADEL/Sentinel tables that collide with the new schema.
+    # Preserve legacy tables that collide with the new schema.
     op.execute(sa.text("ALTER TABLE IF EXISTS users RENAME TO legacy_users"))
     op.execute(sa.text("ALTER TABLE IF EXISTS threat_iocs RENAME TO legacy_threat_iocs"))
+    # Some Railway databases may already have an unrelated 'projects' table.
+    op.execute(sa.text("ALTER TABLE IF EXISTS projects RENAME TO legacy_projects"))
 
     # PostgreSQL extensions required by the schema.
     conn = op.get_bind()
@@ -129,3 +131,4 @@ def downgrade() -> None:
     # Restore legacy table names.
     op.execute(sa.text("ALTER TABLE IF EXISTS legacy_users RENAME TO users"))
     op.execute(sa.text("ALTER TABLE IF EXISTS legacy_threat_iocs RENAME TO threat_iocs"))
+    op.execute(sa.text("ALTER TABLE IF EXISTS legacy_projects RENAME TO projects"))
