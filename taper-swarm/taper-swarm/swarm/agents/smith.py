@@ -1,6 +1,6 @@
 from swarm.agents.base import BaseAgent
 from swarm.config import AGENT_PROMPTS
 
-class BuilderAgent(BaseAgent):
+class SmithAgent(BaseAgent):
     def __init__(self):
-        super().__init__("builder", AGENT_PROMPTS["builder"])
+        super().__init__("smith", AGENT_PROMPTS["smith"])
